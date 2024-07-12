@@ -1,0 +1,12 @@
+<!-- home.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<a href="{% url 'register' %}" class="btn btn-primary">Register</a>
+
+<h1>Welcome to Porsche Showroom!</h1>
+<p>Login to see car details.</p>
+
+<!-- Button for Login -->
+<a href="{% url 'login' %}" class="btn btn-secondary">Login</a>
+{% endblock %}

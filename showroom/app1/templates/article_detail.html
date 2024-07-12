@@ -1,0 +1,15 @@
+<!-- article_detail.html -->
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ article.title }}</h1>
+    <img src="{{ article.image.url }}" class="img-fluid" alt="{{ article.title }}">
+    <p>{{ article.content }}</p>
+    <a href="{% url 'page1' %}" class="btn btn-secondary mt-4">Back to Articles</a>
+</div>
+{% endblock %}

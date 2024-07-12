@@ -1,0 +1,83 @@
+<!-- page1.html -->
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Page 1{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="text-center mb-4">Welcome, {{ user.username }}!</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        {% for article in articles %}
+            <div class="col-md-4 mb-4">
+                <div class="card article-card text-center bg-transparent" onclick="showArticleDetails({{ article.id }})" id="article-{{ article.id }}" style="cursor: pointer;">
+                    <img src="{{ article.image.url }}" class="card-img-top img-thumbnail mx-auto d-block" alt="{{ article.title }}" style="width: 200px; height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ article.title }}</h5>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <!-- Content Box for Article Details -->
+    <div class="content-box mt-4 p-4 mx-auto" id="article-details" style="display: none; max-width: 600px; background-color: rgba(255, 255, 255, 0.9);">
+        <h2 id="article-title" class="text-center"></h2>
+        <img id="article-image" src="" class="img-fluid mx-auto d-block mb-3" alt="" style="max-width: 100%;">
+        <p id="article-content"></p>
+        <button class="btn btn-secondary mt-4 mx-auto d-block" onclick="hideArticleDetails()">Close</button>
+    </div>
+    <!-- Logout Link -->
+    <div class="text-center mt-4">
+        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+    </div>
+</div>
+
+<script>
+function showArticleDetails(articleId) {
+    // Fetch article details via AJAX or similar method
+    fetch(`/get_article_details/${articleId}/`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('article-title').innerText = data.title;
+            document.getElementById('article-image').src = data.image_url;
+            document.getElementById('article-content').innerText = data.content;
+            document.getElementById('article-details').style.display = 'block';
+            document.getElementById('article-details').scrollIntoView({behavior: 'smooth'});
+        });
+}
+
+function hideArticleDetails() {
+    document.getElementById('article-details').style.display = 'none';
+}
+</script>
+
+<style>
+.content-box {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+}
+.card {
+    transition: transform 0.2s;
+    background-color: transparent !important; /* Ensure background is transparent */
+    border: none !important; /* Remove border if any */
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+/* Additional styles for responsiveness */
+@media (max-width: 768px) {
+    .col-md-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+</style>
+{% endblock %}
